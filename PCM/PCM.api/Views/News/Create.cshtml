@@ -1,0 +1,66 @@
+@model _999_News
+
+@{
+    ViewData["Title"] = "Đăng Tin Tức Mới";
+}
+
+<div class="container mt-4">
+    <h2>Đăng Tin Tức Mới</h2>
+    <hr />
+
+    <form asp-action="Create" method="post">
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Tiêu Đề</label>
+                    <input asp-for="Title" class="form-control" placeholder="Tiêu đề tin tức..." />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ImageUrl" class="form-label">URL Hình Ảnh</label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Content" class="form-label">Nội Dung</label>
+                    <textarea asp-for="Content" class="form-control" rows="8" placeholder="Nhập nội dung tin tức..."></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label">Trạng Thái</label>
+                            <select asp-for="Status" class="form-select">
+                                <option value="Draft">Nháp</option>
+                                <option value="Published">Công Khai</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="IsPinned" class="form-label">
+                                <input type="checkbox" asp-for="IsPinned" />
+                                Ghim Tin Này
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Đăng Tin</button>
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary">Huỷ Bỏ</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

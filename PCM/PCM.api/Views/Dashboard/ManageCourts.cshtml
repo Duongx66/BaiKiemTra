@@ -1,0 +1,104 @@
+@model List<PCM.Models._999_Court>
+
+@{
+    ViewData["Title"] = "Quản Lý Sân";
+}
+
+<div class="container-fluid py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-4">
+                <i class="fas fa-court"></i> Quản Lý Sân Cầu Lông
+            </h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="/Courts/Create" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus"></i> Thêm Sân Mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Courts Table -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Số Thứ Tự</th>
+                                        <th>Tên Sân</th>
+                                        <th>Số Hiệu</th>
+                                        <th>Trạng Thái</th>
+                                        <th>Hành Động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var court in Model)
+                                    {
+                                        <tr>
+                                            <td>@court.Id</td>
+                                            <td>@court.CourtName</td>
+                                            <td>@court.Number</td>
+                                            <td>
+                                                @if (court.IsActive)
+                                                {
+                                                    <span class="badge bg-success">Hoạt Động</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Không Hoạt Động</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="/Courts/Edit/@court.Id" class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-edit"></i> Sửa
+                                                </a>
+                                                <a href="/Courts/Delete/@court.Id" class="btn btn-sm btn-danger" onclick="return confirm('Xác nhận xóa?')">
+                                                    <i class="fas fa-trash"></i> Xóa
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle"></i> Không có sân nào. <a href="/Courts/Create">Thêm sân mới</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a href="/Dashboard/AdminPanel" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay Lại
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .btn-sm {
+        margin: 0 2px;
+    }
+
+    h1 {
+        color: #333;
+        font-weight: 600;
+    }
+</style>

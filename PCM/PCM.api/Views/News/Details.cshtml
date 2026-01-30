@@ -1,0 +1,66 @@
+@model _999_News
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" class="img-fluid rounded mb-4 w-100" alt="@Model.Title" style="max-height: 400px; object-fit: cover;" />
+            }
+
+            <article>
+                <header class="mb-4">
+                    <h1>@Model.Title</h1>
+                    <small class="text-muted">
+                        <i class="bi bi-calendar"></i> @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")
+                        | <strong>@Model.CreatedBy</strong>
+                        @if (Model.UpdatedDate.HasValue)
+                        {
+                            <br />
+                            <i class="text-warning">Cập nhật: @Model.UpdatedDate.Value.ToString("dd/MM/yyyy HH:mm")</i>
+                        }
+                    </small>
+                </header>
+
+                <div class="card bg-light mb-4">
+                    <div class="card-body">
+                        @Html.Raw(Model.Content)
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary">← Quay Lại</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-outline-primary">Sửa</a>
+                        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;" onsubmit="return confirm('Xác nhận xoá?')">
+                            <button type="submit" class="btn btn-outline-danger">Xoá</button>
+                        </form>
+                    }
+                </div>
+            </article>
+        </div>
+
+        <aside class="col-md-4">
+            <div class="card sticky-top" style="top: 20px;">
+                <div class="card-header">
+                    <h6 class="mb-0">Thông Tin Bài Viết</h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">
+                        <strong>Trạng Thái:</strong>
+                        <span class="badge bg-@(Model.Status == "Published" ? "success" : "warning")">@Model.Status</span>
+                    </p>
+                    <p class="mb-0">
+                        <strong>Tác Giả:</strong> <br />
+                        @Model.CreatedBy
+                    </p>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>

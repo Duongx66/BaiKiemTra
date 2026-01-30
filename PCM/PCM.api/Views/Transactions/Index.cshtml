@@ -1,0 +1,117 @@
+@model List<_999_Transaction>
+
+@{
+    ViewData["Title"] = "Quản Lý Giao Dịch Tài Chính";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Giao Dịch Tài Chính</h2>
+        <a href="@Url.Action("Create")" class="btn btn-primary">+ Thêm Giao Dịch</a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    @{
+                        var totalIncome = Model.Where(t => t.Type == "Income").Sum(t => t.Amount);
+                    }
+                    <h6 class="card-title text-muted">Tổng Thu Nhập</h6>
+                    <h3 class="text-success">@totalIncome.ToString("C0")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    @{
+                        var totalExpense = Model.Where(t => t.Type == "Expense").Sum(t => t.Amount);
+                    }
+                    <h6 class="card-title text-muted">Tổng Chi Phí</h6>
+                    <h3 class="text-danger">@totalExpense.ToString("C0")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    @{
+                        var balance = totalIncome - totalExpense;
+                    }
+                    <h6 class="card-title text-muted">Cân Đối</h6>
+                    <h3 class="@(balance >= 0 ? "text-success" : "text-danger")">@balance.ToString("C0")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Tổng Giao Dịch</h6>
+                    <h3>@Model.Count()</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h6 class="mb-0">Lịch Sử Giao Dịch</h6>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Ngày</th>
+                        <th>Thành Viên</th>
+                        <th>Loại</th>
+                        <th>Danh Mục</th>
+                        <th>Số Tiền</th>
+                        <th>Mô Tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var transaction in Model)
+                        {
+                            <tr>
+                                <td>@transaction.TransactionDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @if (transaction.Member != null)
+                                    {
+                                        <strong>@transaction.Member.FullName</strong>
+                                    }
+                                    else
+                                    {
+                                        <em class="text-muted">Chưa xác định</em>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge bg-@(transaction.Type == "Income" ? "success" : "danger")">
+                                        @transaction.Type
+                                    </span>
+                                </td>
+                                <td>@transaction.Category</td>
+                                <td class="@(transaction.Type == "Income" ? "text-success" : "text-danger") fw-bold">
+                                    @(transaction.Type == "Income" ? "+" : "-")@transaction.Amount.ToString("C0")
+                                </td>
+                                <td>@transaction.Description</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">Chưa có giao dịch nào</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="@Url.Action("Report")" class="btn btn-info">📊 Xem Báo Cáo Chi Tiết</a>
+    </div>
+</div>

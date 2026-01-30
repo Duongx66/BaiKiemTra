@@ -1,0 +1,42 @@
+@model PCM.Models._999_Member
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-plus"></i> Thêm hội viên mới</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-user"></i> Họ tên <span class="text-danger">*</span></label>
+                        <input asp-for="FullName" class="form-control" placeholder="VD: Trần Văn B" required />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-calendar"></i> Ngày tham gia</label>
+                        <input type="date" asp-for="JoinDate" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-star"></i> Rating DUPR</label>
+                        <input type="number" asp-for="DuprRating" class="form-control" step="0.1" min="0" />
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-success me-md-2">
+                            <i class="fas fa-save"></i> Lưu
+                        </button>
+                        <a href="/Members" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

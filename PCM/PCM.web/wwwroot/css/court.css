@@ -1,0 +1,7 @@
+/* Styles for Court booking */
+.container { color: #222; }
+.card-header .fas { margin-right: 8px; }
+#availability { font-weight: 600; }
+@media (max-width: 576px) {
+  .card { margin: 0 12px; }
+}

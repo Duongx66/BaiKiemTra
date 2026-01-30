@@ -1,0 +1,88 @@
+@model _999_Transaction
+
+@{
+    ViewData["Title"] = "Thêm Giao Dịch Mới";
+}
+
+<div class="container mt-4">
+    <h2>Thêm Giao Dịch Mới</h2>
+    <hr />
+
+    <form asp-action="Create" method="post">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="MemberId" class="form-label">Thành Viên</label>
+                            <select asp-for="MemberId" class="form-select">
+                                <option value="">-- Chọn thành viên --</option>
+                                @foreach (var member in (List<_999_Member>)ViewBag.Members ?? new List<_999_Member>())
+                                {
+                                    <option value="@member.Id">@member.FullName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="MemberId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Type" class="form-label">Loại Giao Dịch</label>
+                            <select asp-for="Type" class="form-select">
+                                <option value="">-- Chọn loại --</option>
+                                <option value="Income">Thu Nhập</option>
+                                <option value="Expense">Chi Phí</option>
+                            </select>
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Category" class="form-label">Danh Mục</label>
+                            <select asp-for="Category" class="form-select">
+                                <option value="">-- Chọn danh mục --</option>
+                                <option value="Membership">Hội Phí</option>
+                                <option value="Booking">Đặt Lịch Sân</option>
+                                <option value="Tournament">Phí Giải Đấu</option>
+                                <option value="Coaching">Huấn Luyện</option>
+                                <option value="Equipment">Thiết Bị</option>
+                                <option value="Maintenance">Bảo Trì</option>
+                                <option value="Other">Khác</option>
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Amount" class="form-label">Số Tiền (VNĐ)</label>
+                            <input asp-for="Amount" type="number" step="1000" class="form-control" placeholder="0" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Mô Tả</label>
+                            <input asp-for="Description" class="form-control" placeholder="Mô tả giao dịch..." />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Notes" class="form-label">Ghi Chú</label>
+                            <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Ghi chú thêm..."></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Lưu Giao Dịch</button>
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary">Huỷ Bỏ</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

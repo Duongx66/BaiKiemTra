@@ -1,0 +1,39 @@
+@model PCM.Models._999_Court
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-edit"></i> Sửa thông tin sân</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <input type="hidden" name="Number" value="@Model.Number" />
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-table-tennis"></i> Tên sân</label>
+                        <input name="CourtName" class="form-control" value="@Model.CourtName" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-toggle-on"></i> Trạng thái</label>
+                        <select name="IsActive" class="form-control">
+                            <option value="true" selected="@(Model.IsActive ? "selected" : null)">Hoạt động</option>
+                            <option value="false" selected="@(!Model.IsActive ? "selected" : null)">Tạm dừng</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-primary me-md-2">
+                            <i class="fas fa-save"></i> Lưu thay đổi
+                        </button>
+                        <a href="/Courts" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

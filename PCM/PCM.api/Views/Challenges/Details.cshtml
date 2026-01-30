@@ -1,0 +1,104 @@
+@model _999_Challenge
+
+@{
+    ViewData["Title"] = "Chi Tiết Giải Đấu";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">@Model.Title</h2>
+                    <span class="badge bg-@(Model.Status == "Open" ? "success" : Model.Status == "Ongoing" ? "warning" : "secondary")">@Model.Status</span>
+                    
+                    <hr />
+                    
+                    <p class="card-text">@Model.Description</p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h6>Thông Tin Giải Đấu</h6>
+                            <ul class="list-unstyled">
+                                <li><strong>Loại:</strong> @Model.ChallengeType</li>
+                                <li><strong>Định Dạng:</strong> @Model.Format</li>
+                                <li><strong>Ngày Tạo:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy")</li>
+                                <li><strong>Ngày Bắt Đầu:</strong> @Model.StartDate.ToString("dd/MM/yyyy HH:mm")</li>
+                                <li><strong>Ngày Kết Thúc:</strong> @Model.EndDate.ToString("dd/MM/yyyy HH:mm")</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Thông Tin Tham Gia</h6>
+                            <ul class="list-unstyled">
+                                <li><strong>Số Người Tham Gia:</strong> @Model.CurrentParticipants/@Model.MaxParticipants</li>
+                                @if (Model.EntryFee > 0)
+                                {
+                                    <li><strong>Phí Dự Thi:</strong> @Model.EntryFee.ToString("C0")</li>
+                                }
+                                @if (Model.Prize > 0)
+                                {
+                                    <li><strong>Tiền Thưởng:</strong> @Model.Prize.ToString("C0")</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    @if (Model.Status == "Open" && Model.CurrentParticipants < Model.MaxParticipants)
+                    {
+                        <form asp-action="Join" method="post" class="mt-4">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-success">Tham Gia Giải Đấu</button>
+                        </form>
+                    }
+                    else if (Model.Status != "Open")
+                    {
+                        <div class="alert alert-warning mt-4">Giải đấu này đã đóng đăng ký.</div>
+                    }
+                    else if (Model.CurrentParticipants >= Model.MaxParticipants)
+                    {
+                        <div class="alert alert-warning mt-4">Số lượng người tham gia đã đủ.</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Danh Sách Người Tham Gia (@Model.Participants?.Count() ?? 0)</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.Participants != null && Model.Participants.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var participant in Model.Participants)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>@(participant.Member?.FullName ?? "N/A")</strong>
+                                        <br />
+                                        <small class="text-muted">@participant.JoinedDate.ToString("dd/MM/yyyy HH:mm")</small>
+                                    </div>
+                                    <span class="badge bg-primary">@participant.Status</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center py-3">Chưa có người đăng ký.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="@Url.Action("Index")" class="btn btn-outline-secondary">← Quay Lại</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-outline-primary">Sửa</a>
+        }
+    </div>
+</div>

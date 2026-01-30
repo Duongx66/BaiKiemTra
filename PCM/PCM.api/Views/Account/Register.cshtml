@@ -1,0 +1,525 @@
+@model PCM.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - PCM Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+            z-index: 0;
+        }
+
+        @@keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .auth-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 480px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 35px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            animation: slideInUp 0.7s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        @@keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(80px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 30px 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.2), transparent);
+            z-index: 1;
+        }
+
+        .auth-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            z-index: 3;
+        }
+
+        .auth-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            width: 100px;
+            height: 100px;
+            border-radius: 25px;
+            line-height: 100px;
+            margin-top: -30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @@keyframes bounceIn {
+            0% { transform: scale(0.2); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .auth-header h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-header p {
+            font-size: 13px;
+            opacity: 0.95;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-body {
+            padding: 45px 35px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-label i {
+            color: #667eea;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group:hover .form-label i {
+            transform: scale(1.2) rotate(10deg);
+            color: #764ba2;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 14px 18px;
+            font-size: 15px;
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.320, 1);
+            background-color: #f8f9ff;
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.4rem rgba(102, 126, 234, 0.2);
+            background-color: white;
+            transform: translateY(-3px);
+        }
+
+        .form-control::placeholder {
+            color: #cbd5e0;
+            font-weight: 400;
+        }
+
+        .password-strength {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            margin-top: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            border-radius: 8px;
+        }
+
+        .password-strength-bar.fair {
+            width: 50%;
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+        }
+
+        .password-strength-bar.good {
+            width: 75%;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: linear-gradient(90deg, #27ae60, #229954);
+            box-shadow: 0 0 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .password-strength-text {
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 600;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .password-strength-text i {
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .password-strength-text.weak i {
+            color: #e74c3c;
+        }
+
+        .password-strength-text.fair i {
+            color: #f39c12;
+        }
+
+        .password-strength-text.good i {
+            color: #3498db;
+        }
+
+        .password-strength-text.strong i {
+            color: #27ae60;
+        }
+
+        .btn-auth {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-weight: 700;
+            font-size: 15.5px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-auth::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.7s, height 0.7s;
+            z-index: 0;
+        }
+
+        .btn-auth:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5);
+            color: white;
+        }
+
+        .btn-auth:active {
+            transform: translateY(-2px) scale(1);
+        }
+
+        .btn-auth > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-footer {
+            text-align: center;
+            padding: 30px 35px;
+            border-top: 2px solid #f0f0f0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.8) 100%);
+            position: relative;
+            z-index: 2;
+        }
+
+        .auth-footer p {
+            margin: 0;
+            font-size: 15px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .auth-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .auth-footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .auth-footer a:hover {
+            color: #764ba2;
+        }
+
+        .auth-footer a:hover::after {
+            width: 100%;
+        }
+
+        .text-danger {
+            font-size: 13px;
+            margin-top: 10px;
+            display: block;
+            color: #e74c3c;
+            font-weight: 500;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @@keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .alert {
+            border-radius: 15px;
+            border: 1.5px solid rgba(231, 76, 60, 0.3);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.08) 0%, rgba(231, 76, 60, 0.02) 100%);
+            color: #c0392b;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .password-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-user-plus auth-icon"></i>
+                <h2>Đăng Ký</h2>
+                <p>Tham gia cộng đồng CLB Cầu Lông</p>
+            </div>
+
+            <div class="auth-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="form-label">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input asp-for="Email" class="form-control" placeholder="your@email.com" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="form-label">
+                            <i class="fas fa-lock"></i> Mật khẩu
+                        </label>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" id="password" required />
+                        <div class="password-strength">
+                            <div class="password-strength-bar" id="strengthBar"></div>
+                        </div>
+                        <div class="password-strength-text weak" id="strengthText">
+                            <i class="fas fa-circle-notch"></i> <span id="strengthLabel">Nhập mật khẩu</span>
+                        </div>
+                        <div class="password-hint">
+                            <i class="fas fa-lightbulb"></i> Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="form-label">
+                            <i class="fas fa-lock"></i> Xác nhận mật khẩu
+                        </label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="••••••••" id="confirmPassword" required />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        <span id="passwordMatchError" class="text-danger" style="display: none;">Mật khẩu không trùng khớp</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-auth w-100">
+                        <i class="fas fa-user-plus"></i> Đăng Ký Ngay
+                    </button>
+                </form>
+            </div>
+
+            <div class="auth-footer">
+                <p>Đã có tài khoản? <a href="/Account/Login">Đăng nhập</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+        const strengthLabel = document.getElementById('strengthLabel');
+        const passwordMatchError = document.getElementById('passwordMatchError');
+
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                let label = 'Yếu';
+
+                if (password.length >= 8) strength++;
+                if (password.length >= 12) strength++;
+                if (/[a-z]/.test(password)) strength++;
+                if (/[A-Z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+                strengthBar.className = 'password-strength-bar';
+                strengthText.className = 'password-strength-text weak';
+
+                if (strength === 0) {
+                    label = 'Nhập mật khẩu';
+                } else if (strength <= 2) {
+                    strengthBar.classList.add('fair');
+                    strengthText.classList.replace('weak', 'fair');
+                    label = 'Yếu';
+                } else if (strength <= 4) {
+                    strengthBar.classList.add('good');
+                    strengthText.classList.replace('weak', 'good');
+                    label = 'Trung bình';
+                } else {
+                    strengthBar.classList.add('strong');
+                    strengthText.classList.replace('weak', 'strong');
+                    label = 'Mạnh';
+                }
+
+                strengthLabel.textContent = label;
+
+                // Check password match
+                if (confirmPasswordInput.value) {
+                    checkPasswordMatch();
+                }
+            });
+
+            confirmPasswordInput.addEventListener('input', function() {
+                checkPasswordMatch();
+            });
+        }
+
+        function checkPasswordMatch() {
+            if (passwordInput.value !== confirmPasswordInput.value && confirmPasswordInput.value !== '') {
+                passwordMatchError.style.display = 'block';
+            } else {
+                passwordMatchError.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

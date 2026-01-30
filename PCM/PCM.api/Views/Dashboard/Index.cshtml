@@ -1,0 +1,179 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    var isAdmin = User.IsInRole("Admin");
+}
+
+<div class="container-fluid py-5">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-4">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </h1>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        @if (isAdmin)
+        {
+            <div class="col-md-3">
+                <div class="card bg-primary text-white shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-title mb-0">Tổng Sân</h6>
+                                <h2 class="mt-2">@ViewBag.TotalCourts</h2>
+                            </div>
+                            <i class="fas fa-court fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top border-white opacity-25">
+                        <small><a href="/Dashboard/ManageCourts" class="text-white text-decoration-none">Xem chi tiết →</a></small>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Thành Viên</h6>
+                            <h2 class="mt-2">@ViewBag.TotalMembers</h2>
+                        </div>
+                        <i class="fas fa-users fa-3x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top border-white opacity-25">
+                    <small><a href="/Members/Index" class="text-white text-decoration-none">Xem chi tiết →</a></small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-warning text-white shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Đặt Sân</h6>
+                            <h2 class="mt-2">@ViewBag.TotalBookings</h2>
+                        </div>
+                        <i class="fas fa-calendar-check fa-3x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top border-white opacity-25">
+                    <small><a href="/Bookings/Index" class="text-white text-decoration-none">Xem chi tiết →</a></small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-info text-white shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Trận Đấu</h6>
+                            <h2 class="mt-2">@ViewBag.TotalMatches</h2>
+                        </div>
+                        <i class="fas fa-volleyball-ball fa-3x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top border-white opacity-25">
+                    <small><a href="/Matches/Index" class="text-white text-decoration-none">Xem chi tiết →</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Button -->
+    @if (isAdmin)
+    {
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <a href="/Dashboard/AdminPanel" class="btn btn-danger btn-lg">
+                    <i class="fas fa-cogs"></i> Bảng Điều Khiển Admin
+                </a>
+                <a href="/Dashboard/ManageFunds" class="btn btn-warning btn-lg ms-2">
+                    <i class="fas fa-money-bill-wave"></i> Quản Lý Quỹ
+                </a>
+            </div>
+        </div>
+    }
+
+    <!-- Recent Bookings -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-list"></i> Đặt Sân Gần Đây</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentBookings != null && ViewBag.RecentBookings.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sân</th>
+                                        <th>Ngày</th>
+                                        <th>Giờ Bắt Đầu</th>
+                                        <th>Giờ Kết Thúc</th>
+                                        <th>Thành Viên</th>
+                                        <th>Trạng Thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var booking in ViewBag.RecentBookings)
+                                    {
+                                        var court = booking.Court;
+                                        var member = booking.Member;
+                                        <tr>
+                                            <td>@(court?.CourtName ?? "N/A")</td>
+                                            <td>@booking.BookingDate.ToShortDateString()</td>
+                                            <td>@booking.StartHour:00</td>
+                                            <td>@booking.EndHour:00</td>
+                                            <td>@(member?.FullName ?? "N/A")</td>
+                                            <td>
+                                                <span class="badge bg-success">@booking.Status</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Không có đặt sân nào.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-footer a {
+        font-weight: 500;
+    }
+
+    .card-footer a:hover {
+        text-decoration: underline !important;
+    }
+
+    .btn-lg {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+</style>

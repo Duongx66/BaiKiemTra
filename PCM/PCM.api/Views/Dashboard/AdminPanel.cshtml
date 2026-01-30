@@ -1,0 +1,149 @@
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="container-fluid py-5">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-4">
+                <i class="fas fa-cogs"></i> Bảng Điều Khiển Admin
+            </h1>
+        </div>
+    </div>
+
+    <!-- Admin Menu -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-court fa-4x text-primary mb-3"></i>
+                            <h5 class="card-title">Quản Lý Sân</h5>
+                            <p class="card-text text-muted">Thêm, sửa, xóa sân cầu lông</p>
+                            <a href="/Dashboard/ManageCourts" class="btn btn-primary">
+                                Vào quản lý
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-4x text-success mb-3"></i>
+                            <h5 class="card-title">Quản Lý Thành Viên</h5>
+                            <p class="card-text text-muted">Quản lý danh sách thành viên</p>
+                            <a href="/Members/Index" class="btn btn-success">
+                                Vào quản lý
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-calendar-check fa-4x text-warning mb-3"></i>
+                            <h5 class="card-title">Quản Lý Đặt Sân</h5>
+                            <p class="card-text text-muted">Xem và quản lý lịch đặt sân</p>
+                            <a href="/Bookings/Index" class="btn btn-warning">
+                                Vào quản lý
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-volleyball-ball fa-4x text-info mb-3"></i>
+                            <h5 class="card-title">Quản Lý Trận Đấu</h5>
+                            <p class="card-text text-muted">Quản lý các trận đấu</p>
+                            <a href="/Matches/Index" class="btn btn-info">
+                                Vào quản lý
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-money-bill-wave fa-4x text-danger mb-3"></i>
+                            <h5 class="card-title">Quản Lý Quỹ</h5>
+                            <p class="card-text text-muted">Quản lý tài chính và quỹ</p>
+                            <a href="/Dashboard/ManageFunds" class="btn btn-danger">
+                                Vào quản lý
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-arrow-left fa-4x text-secondary mb-3"></i>
+                            <h5 class="card-title">Quay Lại</h5>
+                            <p class="card-text text-muted">Về trang dashboard chính</p>
+                            <a href="/Dashboard" class="btn btn-secondary">
+                                Quay lại
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Statistics -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-info-circle"></i> Thống Kê Admin</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <h6>Tổng Sân</h6>
+                            <h2 class="text-primary">@ViewBag.TotalCourts</h2>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h6>Tổng Thành Viên</h6>
+                            <h2 class="text-success">@ViewBag.TotalMembers</h2>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h6>Tổng Đặt Sân</h6>
+                            <h2 class="text-warning">@ViewBag.TotalBookings</h2>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h6>Tổng Trận Đấu</h6>
+                            <h2 class="text-info">@ViewBag.TotalMatches</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    i {
+        margin-bottom: 15px;
+    }
+</style>

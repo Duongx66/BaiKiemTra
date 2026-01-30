@@ -1,0 +1,111 @@
+@model _999_Challenge
+
+@{
+    ViewData["Title"] = "Sửa Giải Đấu";
+}
+
+<div class="container mt-4">
+    <h2>Sửa Giải Đấu</h2>
+    <hr />
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">Tên Giải Đấu</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Mô Tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ChallengeType" class="form-label">Loại Giải Đấu</label>
+                            <select asp-for="ChallengeType" class="form-select">
+                                <option value="Tournament">Giải Đấu Chính Thức</option>
+                                <option value="FriendlyMatch">Trận Giao Hữu</option>
+                                <option value="RankedMatch">Trận Xếp Hạng</option>
+                            </select>
+                            <span asp-validation-for="ChallengeType" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Format" class="form-label">Định Dạng</label>
+                            <select asp-for="Format" class="form-select">
+                                <option value="Singles">Đơn (1v1)</option>
+                                <option value="Doubles">Đôi (2v2)</option>
+                            </select>
+                            <span asp-validation-for="Format" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="StartDate" class="form-label">Ngày Bắt Đầu</label>
+                            <input asp-for="StartDate" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="EndDate" class="form-label">Ngày Kết Thúc</label>
+                            <input asp-for="EndDate" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MaxParticipants" class="form-label">Số Người Tối Đa</label>
+                            <input asp-for="MaxParticipants" type="number" class="form-control" />
+                            <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EntryFee" class="form-label">Phí Dự Thi</label>
+                                    <input asp-for="EntryFee" type="number" step="1000" class="form-control" />
+                                    <span asp-validation-for="EntryFee" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Prize" class="form-label">Tiền Thưởng</label>
+                                    <input asp-for="Prize" type="number" step="1000" class="form-control" />
+                                    <span asp-validation-for="Prize" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label">Trạng Thái</label>
+                            <select asp-for="Status" class="form-select">
+                                <option value="Open">Đang Mở</option>
+                                <option value="Ongoing">Đang Diễn Ra</option>
+                                <option value="Completed">Đã Hoàn Thành</option>
+                                <option value="Cancelled">Đã Huỷ</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary">Huỷ Bỏ</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

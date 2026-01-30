@@ -1,0 +1,464 @@
+@model PCM.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - PCM Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+            z-index: 0;
+        }
+
+        @@keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .auth-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 450px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 35px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            animation: slideInUp 0.7s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        @@keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(80px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 30px 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.2), transparent);
+            z-index: 1;
+        }
+
+        .auth-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            z-index: 3;
+        }
+
+        .auth-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            width: 100px;
+            height: 100px;
+            border-radius: 25px;
+            line-height: 100px;
+            margin-top: -30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @@keyframes bounceIn {
+            0% { transform: scale(0.2); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .auth-header h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-header p {
+            font-size: 13px;
+            opacity: 0.95;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-body {
+            padding: 45px 35px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-label i {
+            color: #667eea;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group:hover .form-label i {
+            transform: scale(1.2) rotate(10deg);
+            color: #764ba2;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 14px 18px;
+            font-size: 15px;
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.320, 1);
+            background-color: #f8f9ff;
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.4rem rgba(102, 126, 234, 0.2);
+            background-color: white;
+            transform: translateY(-3px);
+        }
+
+        .form-control::placeholder {
+            color: #cbd5e0;
+            font-weight: 400;
+        }
+
+        .form-check {
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-check-input {
+            width: 24px;
+            height: 24px;
+            border: 2.5px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            margin-top: 0;
+        }
+
+        .form-check-input:hover {
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .form-check-input:checked {
+            background-color: #667eea;
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.3rem rgba(102, 126, 234, 0.25);
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 12px;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .form-check-input:checked ~ .form-check-label {
+            color: #667eea;
+        }
+
+        .btn-auth {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-weight: 700;
+            font-size: 15.5px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn-auth::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.7s, height 0.7s;
+            z-index: 0;
+        }
+
+        .btn-auth:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5);
+            color: white;
+        }
+
+        .btn-auth:active {
+            transform: translateY(-2px) scale(1);
+        }
+
+        .btn-auth > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-footer {
+            text-align: center;
+            padding: 30px 35px;
+            border-top: 2px solid #f0f0f0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.8) 100%);
+            position: relative;
+            z-index: 2;
+        }
+
+        .auth-footer p {
+            margin: 0;
+            font-size: 15px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .auth-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .auth-footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .auth-footer a:hover {
+            color: #764ba2;
+        }
+
+        .auth-footer a:hover::after {
+            width: 100%;
+        }
+
+        .text-danger {
+            font-size: 13px;
+            margin-top: 10px;
+            display: block;
+            color: #e74c3c;
+            font-weight: 500;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @@keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .alert {
+            border-radius: 15px;
+            border: 1.5px solid rgba(231, 76, 60, 0.3);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.08) 0%, rgba(231, 76, 60, 0.02) 100%);
+            color: #c0392b;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .forgot-password {
+            font-size: 13px;
+            text-align: right;
+            margin-bottom: 25px;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .forgot-password a:hover {
+            color: #764ba2;
+        }
+
+        .test-account-info {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #999;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .test-account-info i {
+            color: #667eea;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-badminton auth-icon"></i>
+                <h2>Đăng Nhập</h2>
+                <p>Hệ thống quản lý CLB Cầu Lông PCM</p>
+            </div>
+
+            <div class="auth-body">
+                <form method="post">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fas fa-exclamation-circle"></i> @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="form-label">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input asp-for="Email" class="form-control" placeholder="your@email.com" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="form-label">
+                            <i class="fas fa-lock"></i> Mật khẩu
+                        </label>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" required />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="forgot-password">
+                        <a href="#"><i class="fas fa-question-circle"></i> Quên mật khẩu?</a>
+                    </div>
+
+                    <div class="form-check">
+                        <input asp-for="RememberMe" class="form-check-input" id="rememberMe" />
+                        <label asp-for="RememberMe" class="form-check-label" for="rememberMe">
+                            Ghi nhớ đăng nhập của tôi
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-auth w-100">
+                        <i class="fas fa-sign-in-alt"></i> Đăng Nhập Ngay
+                    </button>
+                </form>
+            </div>
+
+            <div class="auth-footer">
+                <p>Chưa có tài khoản? <a href="/Account/Register">Đăng ký miễn phí</a></p>
+                <div class="test-account-info">
+                    <i class="fas fa-shield-alt"></i> Test: admin@pcm.com / Admin@123
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
