@@ -16,7 +16,28 @@
             </div>
         </div>
     </div>
+<h2>Danh sách sân</h2>
+<button onclick="loadCourts()">Tải dữ liệu</button>
 
+<ul id="courts"></ul>
+
+<script>
+  const API_BASE = "http://localhost:5000";
+
+  async function loadCourts() {
+    const res = await fetch(`${API_BASE}/api/Courts`);
+    const data = await res.json();
+
+    const ul = document.getElementById("courts");
+    ul.innerHTML = "";
+
+    data.forEach(c => {
+      const li = document.createElement("li");
+      li.innerText = c.name;
+      ul.appendChild(li);
+    });
+  }
+</script>
     <div class="col-md-4">
         <div class="card text-center h-100">
             <div class="card-body">

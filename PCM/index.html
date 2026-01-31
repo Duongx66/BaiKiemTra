@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>PCM Web</title>
+</head>
+<body>
+
+<h1>🎾 PCM – Frontend</h1>
+
+<button onclick="loadCourts()">Xem danh sách sân</button>
+
+<ul id="courts"></ul>
+
+<script>
+  // URL BACKEND
+  // `env.js` (served alongside this file) can set `window.__PCM_API__` at deploy time.
+  // Fallback order: window.__PCM_API__ -> same-host default -> production URL
+  const DEFAULT_API = "https://pcm-api.onrender.com";
+  const SAME_HOST_API = `${location.protocol}//${location.hostname}:8080`;
+  const API_BASE = (window.__PCM_API__ || SAME_HOST_API || DEFAULT_API);
+
+  async function loadCourts() {
+    try {
+      const response = await fetch(`${API_BASE}/api/Courts`);
+      const data = await response.json();
+
+      const ul = document.getElementById("courts");
+      ul.innerHTML = "";
+
+      data.forEach(item => {
+        const li = document.createElement("li");
+        li.innerText = item.name + " - " + item.location;
+        ul.appendChild(li);
+      });
+
+    } catch (error) {
+      alert("Không kết nối được PCM.api");
+      console.error(error);
+    }
+  }
+
+  window.__PCM_API__ = "http://localhost:5000";
+</script>
+
+</body>
+</html>

@@ -157,3 +157,14 @@ C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\obj\Deb
 C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\obj\Debug\net8.0\PCM.pdb
 C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\obj\Debug\net8.0\PCM.genruntimeconfig.cache
 C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\obj\Debug\net8.0\ref\PCM.dll
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\publish\web.config
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\web.config
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\appsettings.json
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\PCM.deps.json
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\PCM.runtimeconfig.json
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\PCM.staticwebassets.endpoints.json
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\publish\appsettings.json
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\publish\PCM.deps.json
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\publish\PCM.runtimeconfig.json
+C:\Users\Duong\OneDrive - Dai Nam University\Desktop\kiemtra\PCM\PCM.api\bin\Debug\net8.0\out\publish\PCM.staticwebassets.endpoints.json

@@ -55,7 +55,19 @@ var app = builder.Build();
 // =======================
 using (var scope = app.Services.CreateScope())
 {
-    await DbSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
+    var services = scope.ServiceProvider;
+    try
+    {
+        var db = services.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Could not migrate the database.");
+    }
+
+    await DbSeeder.SeedRolesAndAdminAsync(services);
 }
 
 // =======================
