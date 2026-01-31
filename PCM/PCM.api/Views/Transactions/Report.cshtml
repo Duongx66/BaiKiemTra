@@ -1,0 +1,141 @@
+@model List<_999_Transaction>
+
+@{
+    ViewData["Title"] = "Báo Cáo Tài Chính";
+    var summary = ViewBag.Summary as dynamic;
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Báo Cáo Chi Tiết - Tài Chính</h2>
+        <div>
+            <button id="exportCsv" class="btn btn-outline-primary">📥 Xuất CSV</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary ms-2">↩ Quay lại</a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Tổng Thu Nhập</h6>
+                    <h3 class="text-success">@((summary?.TotalIncome ?? 0).ToString("C0"))</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Tổng Chi Phí</h6>
+                    <h3 class="text-danger">@((summary?.TotalExpense ?? 0).ToString("C0"))</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Cân Đối</h6>
+                    <h3 class="@( (summary != null && summary.Balance >= 0) ? "text-success" : "text-danger")">@((summary?.Balance ?? 0).ToString("C0"))</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Chi tiết giao dịch</h6>
+            <div>
+                <label class="me-2">Lọc:</label>
+                <select id="filterType" class="form-select d-inline-block w-auto me-2">
+                    <option value="">Tất cả</option>
+                    <option value="Income">Thu</option>
+                    <option value="Expense">Chi</option>
+                </select>
+                <select id="filterCategory" class="form-select d-inline-block w-auto me-2">
+                    <option value="">Tất cả danh mục</option>
+                    @foreach (var c in Model.Select(m => m.Category).Distinct())
+                    {
+                        <option value="@c">@c</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="transactionsTable" class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Ngày</th>
+                        <th>Thành Viên</th>
+                        <th>Loại</th>
+                        <th>Danh Mục</th>
+                        <th>Số Tiền</th>
+                        <th>Mô Tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var t in Model)
+                        {
+                            <tr data-type="@t.Type" data-category="@t.Category">
+                                <td>@t.TransactionDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@(t.Member != null ? t.Member.FullName : "Chưa xác định")</td>
+                                <td><span class="badge bg-@(t.Type == "Income" ? "success" : "danger")">@t.Type</span></td>
+                                <td>@t.Category</td>
+                                <td class="@(t.Type == "Income" ? "text-success" : "text-danger") fw-bold">@(t.Type == "Income" ? "+" : "-")@t.Amount.ToString("C0")</td>
+                                <td>@t.Description</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="6" class="text-center text-muted py-4">Không có giao dịch</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        const filterType = document.getElementById('filterType');
+        const filterCategory = document.getElementById('filterCategory');
+        const table = document.getElementById('transactionsTable');
+
+        function applyFilters(){
+            const type = filterType.value;
+            const category = filterCategory.value;
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(r => {
+                const rtype = r.getAttribute('data-type');
+                const rcat = r.getAttribute('data-category');
+                let visible = true;
+                if(type && rtype !== type) visible = false;
+                if(category && rcat !== category) visible = false;
+                r.style.display = visible ? '' : 'none';
+            });
+        }
+
+        filterType.addEventListener('change', applyFilters);
+        filterCategory.addEventListener('change', applyFilters);
+
+        // CSV export
+        document.getElementById('exportCsv').addEventListener('click', function(){
+            const headers = ['Date','Member','Type','Category','Amount','Description'];
+            const rows = Array.from(table.querySelectorAll('tbody tr')).filter(r => r.style.display !== 'none');
+            const csv = [headers.join(',')].concat(rows.map(r => {
+                const cols = Array.from(r.querySelectorAll('td')).map(td => '"' + td.innerText.replace(/"/g, '""') + '"');
+                return cols.join(',');
+            })).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'transactions_report.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    })();
+</script>
