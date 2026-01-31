@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PCM.Migrations
+namespace PCM.api.Data.Migrations
 {
     /// <inheritdoc />
     public partial class AddMainTables : Migration

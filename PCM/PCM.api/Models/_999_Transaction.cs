@@ -1,4 +1,4 @@
-namespace PCM.Models
+namespace PCM.api.Models
 {
     public class _999_Transaction
     {

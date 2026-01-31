@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PCM.Models
+namespace PCM.api.Models
 {
     public class LoginViewModel
     {

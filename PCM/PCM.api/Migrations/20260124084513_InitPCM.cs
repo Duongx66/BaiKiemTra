@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace PCM.Migrations
+namespace PCM.api.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitPCM : Migration

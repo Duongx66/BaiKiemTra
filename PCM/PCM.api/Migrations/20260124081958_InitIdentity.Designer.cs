@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PCM.Data;
+using PCM.api.Data;
 
 #nullable disable
 
-namespace PCM.Migrations
+namespace PCM.api.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20260124081958_InitIdentity")]

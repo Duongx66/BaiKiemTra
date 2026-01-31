@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PCM.Data;
-using PCM.Services;
+using PCM.api.Data;
+using PCM.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +17,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // =======================
 // IDENTITY
 // =======================
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 })
-.AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<ApplicationDbContext>();
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+
+// =======================
+// AUTHENTICATION CONFIGURATION
+// =======================
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
 
 // =======================
 // MVC + RAZOR

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PCM.Data;
-using PCM.Models;
+using PCM.api.Data;
+using PCM.api.Models;
 
-namespace PCM.Controllers
+namespace PCM.api.Controllers
 {
     [Authorize]
     public class ChallengesController : Controller

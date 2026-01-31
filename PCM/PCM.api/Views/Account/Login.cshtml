@@ -1,4 +1,4 @@
-@model PCM.Models.LoginViewModel
+@model PCM.api.Models.LoginViewModel
 
 @{
     ViewData["Title"] = "Đăng nhập";
@@ -407,7 +407,7 @@
             </div>
 
             <div class="auth-body">
-                <form method="post">
+                <form method="post" asp-controller="Account" asp-action="Login">
                     @if (ViewBag.ErrorMessage != null)
                     {
                         <div class="alert alert-danger" role="alert">
@@ -453,7 +453,7 @@
             <div class="auth-footer">
                 <p>Chưa có tài khoản? <a href="/Account/Register">Đăng ký miễn phí</a></p>
                 <div class="test-account-info">
-                    <i class="fas fa-shield-alt"></i> Test: admin@pcm.com / Admin@123
+                    <i class="fas fa-shield-alt"></i> Test: admin@pcm.com / Admin@12345
                 </div>
             </div>
         </div>

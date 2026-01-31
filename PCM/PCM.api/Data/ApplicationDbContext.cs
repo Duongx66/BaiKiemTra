@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PCM.Models;
+using PCM.api.Models;
 
-namespace PCM.Data
+namespace PCM.api.Data
 {
     // ⚠️ QUAN TRỌNG:
     // Phải chỉ rõ IdentityUser để tránh lỗi khi deploy

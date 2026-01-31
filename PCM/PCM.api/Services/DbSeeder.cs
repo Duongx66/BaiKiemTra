@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
-using PCM.Data;
-using PCM.Models;
+using PCM.api.Data;
+using PCM.api.Models;
 
-namespace PCM.Services
+namespace PCM.api.Services
 {
     public static class DbSeeder
     {

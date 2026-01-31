@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PCM.Data;
+using PCM.api.Data;
 
-namespace PCM.Controllers
+namespace PCM.api.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;

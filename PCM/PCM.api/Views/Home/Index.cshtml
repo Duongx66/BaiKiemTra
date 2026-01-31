@@ -1,72 +1,195 @@
-﻿<div class="text-center mb-5">
-    <h2 class="text-white"><i class="fas fa-chart-line"></i> Dashboard Tổng quan</h2>
-    <p class="text-white-50">Thống kê nhanh về hệ thống quản lý</p>
-</div>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
-<div class="row g-4">
-    <div class="col-md-4">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <div class="display-4 text-primary mb-3">
-                    <i class="fas fa-table-tennis"></i>
-                </div>
-                <h5 class="card-title">Sân cầu lông</h5>
-                <h2 class="text-primary">@ViewBag.CourtCount</h2>
-                <p class="text-muted">Sân đang hoạt động</p>
-            </div>
-        </div>
-    </div>
+@{
+    ViewData["Title"] = "Trang Chủ";
+    Layout = "_Layout";
+}
 
-    <div class="col-md-4">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <div class="display-4 text-success mb-3">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h5 class="card-title">Hội viên</h5>
-                <h2 class="text-success">@ViewBag.MemberCount</h2>
-                <p class="text-muted">Thành viên đăng ký</p>
+@if (!SignInManager.IsSignedIn(User))
+{
+    <!-- Login/Register Section -->
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 80vh; padding: 20px;">
+        <div style="width: 100%; max-width: 900px;">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h1 style="color: white; font-size: 48px; margin-bottom: 10px;">
+                    <i class="fas fa-badminton"></i> PCM - Hệ Thống Quản Lý CLB Cầu Lông
+                </h1>
+                <p style="color: rgba(255,255,255,0.8); font-size: 18px;">Quản lý chuyên nghiệp, hiệu quả cho CLB cầu lông</p>
             </div>
-        </div>
-    </div>
 
-    <div class="col-md-4">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <div class="display-4 text-warning mb-3">
-                    <i class="fas fa-calendar-check"></i>
-                </div>
-                <h5 class="card-title">Lịch đặt</h5>
-                <h2 class="text-warning">@ViewBag.BookingCount</h2>
-                <p class="text-muted">Đặt lịch thành công</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Thông tin hệ thống</h5>
-            </div>
-            <div class="card-body">
-                <p>Chào mừng đến với hệ thống quản lý CLB Cầu Lông PCM. Sử dụng menu bên trái để điều hướng.</p>
-                <div class="row">
-                    <div class="col-md-4">
-                        <h6><i class="fas fa-table-tennis text-primary"></i> Quản lý sân</h6>
-                        <p>Thêm, sửa, xóa thông tin các sân cầu lông.</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h6><i class="fas fa-users text-success"></i> Quản lý hội viên</h6>
-                        <p>Quản lý danh sách hội viên của CLB.</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h6><i class="fas fa-calendar-check text-warning"></i> Đặt lịch</h6>
-                        <p>Đặt lịch sử dụng sân cho hội viên.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+                <!-- Login Box -->
+                <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px; font-weight: bold;">
+                        <i class="fas fa-sign-in-alt"></i> Đăng Nhập
+                    </h2>
+                    <form method="post" asp-controller="Account" asp-action="Login" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 8px;">
+                                <i class="fas fa-envelope"></i> Email
+                            </label>
+                            <input type="email" name="Email" placeholder="your@email.com" style="width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 14px; transition: all 0.3s;" required />
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 8px;">
+                                <i class="fas fa-lock"></i> Mật khẩu
+                            </label>
+                            <input type="password" name="Password" placeholder="••••••••" style="width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 14px; transition: all 0.3s;" required />
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" name="RememberMe" id="rememberMe" style="width: 18px; height: 18px; cursor: pointer;" />
+                            <label for="rememberMe" style="color: #555; font-size: 14px; cursor: pointer;">Ghi nhớ đăng nhập</label>
+                        </div>
+                        <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="fas fa-arrow-right"></i> Đăng Nhập Ngay
+                        </button>
+                    </form>
+                    <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef;">
+                        <p style="color: #666; font-size: 14px; margin: 0;">Test: <strong>admin@pcm.com</strong> / <strong>Admin@12345</strong></p>
                     </div>
                 </div>
+
+                <!-- Register Box -->
+                <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px; font-weight: bold;">
+                        <i class="fas fa-user-plus"></i> Đăng Ký
+                    </h2>
+                    <form method="post" asp-controller="Account" asp-action="Register" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 8px;">
+                                <i class="fas fa-envelope"></i> Email
+                            </label>
+                            <input type="email" name="Email" placeholder="your@email.com" style="width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 14px; transition: all 0.3s;" required />
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 8px;">
+                                <i class="fas fa-lock"></i> Mật khẩu
+                            </label>
+                            <input type="password" name="Password" placeholder="••••••••" style="width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 14px; transition: all 0.3s;" required />
+                            <small style="color: #999; display: block; margin-top: 8px;">Ít nhất 8 ký tự, bao gồm chữ hoa, thường, số và ký tự đặc biệt</small>
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 8px;">
+                                <i class="fas fa-lock"></i> Xác nhận mật khẩu
+                            </label>
+                            <input type="password" name="ConfirmPassword" placeholder="••••••••" style="width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 14px; transition: all 0.3s;" required />
+                        </div>
+                        <button type="submit" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; padding: 14px; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="fas fa-user-plus"></i> Đăng Ký Ngay
+                        </button>
+                    </form>
+                    <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef;">
+                        <p style="color: #666; font-size: 14px; margin: 0;">Đã có tài khoản? <a href="/Account/Login" style="color: #667eea; text-decoration: none; font-weight: 600;">Đăng nhập ở đây</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 40px; border: 1px solid rgba(255,255,255,0.1);">
+                <h3 style="color: white; text-align: center; margin-bottom: 30px; font-size: 28px;">
+                    <i class="fas fa-star"></i> Tính năng chính
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.08); padding: 25px; border-radius: 15px; text-align: center; border-left: 4px solid #667eea;">
+                        <div style="font-size: 40px; color: #667eea; margin-bottom: 15px;">
+                            <i class="fas fa-table-tennis"></i>
+                        </div>
+                        <h4 style="color: white; margin-bottom: 10px;">Quản lý Sân</h4>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Quản lý thông tin sân cầu lông, tình trạng hoạt động</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.08); padding: 25px; border-radius: 15px; text-align: center; border-left: 4px solid #27ae60;">
+                        <div style="font-size: 40px; color: #27ae60; margin-bottom: 15px;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4 style="color: white; margin-bottom: 10px;">Quản lý Hội viên</h4>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Theo dõi danh sách hội viên và thông tin chi tiết</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.08); padding: 25px; border-radius: 15px; text-align: center; border-left: 4px solid #f39c12;">
+                        <div style="font-size: 40px; color: #f39c12; margin-bottom: 15px;">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h4 style="color: white; margin-bottom: 10px;">Đặt lịch</h4>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Đặt lịch sử dụng sân dễ dàng và nhanh chóng</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <!-- Dashboard Section for Logged In Users -->
+    <div class="text-center mb-5">
+        <h2 class="text-white"><i class="fas fa-chart-line"></i> Dashboard Tổng quan</h2>
+        <p class="text-white-50">Thống kê nhanh về hệ thống quản lý</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="display-4 text-primary mb-3">
+                        <i class="fas fa-table-tennis"></i>
+                    </div>
+                    <h5 class="card-title">Sân cầu lông</h5>
+                    <h2 class="text-primary">@ViewBag.CourtCount</h2>
+                    <p class="text-muted">Sân đang hoạt động</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="display-4 text-success mb-3">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5 class="card-title">Hội viên</h5>
+                    <h2 class="text-success">@ViewBag.MemberCount</h2>
+                    <p class="text-muted">Thành viên đăng ký</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="display-4 text-warning mb-3">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h5 class="card-title">Lịch đặt</h5>
+                    <h2 class="text-warning">@ViewBag.BookingCount</h2>
+                    <p class="text-muted">Đặt lịch thành công</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle"></i> Thông tin hệ thống</h5>
+                </div>
+                <div class="card-body">
+                    <p>Chào mừng đến với hệ thống quản lý CLB Cầu Lông PCM. Sử dụng menu bên trái để điều hướng.</p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-table-tennis text-primary"></i> Quản lý sân</h6>
+                            <p>Thêm, sửa, xóa thông tin các sân cầu lông.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-users text-success"></i> Quản lý hội viên</h6>
+                            <p>Quản lý danh sách hội viên của CLB.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-calendar-check text-warning"></i> Đặt lịch</h6>
+                            <p>Đặt lịch sử dụng sân cho hội viên.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
